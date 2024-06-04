@@ -1,0 +1,29 @@
+<!-- patients-list.html -->
+<div class="mt-4">
+    <h2 class="mb-3">Patient List</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Address</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="patient : ${patients}">
+            <td th:text="${patient.id}"></td>
+            <td th:text="${patient.name}"></td>
+            <td th:text="${patient.age}"></td>
+            <td th:text="${patient.gender}"></td>
+            <td th:text="${patient.address}"></td>
+            <td>
+                <button class="btn btn-warning btn-sm">Edit</button>
+                <button class="btn btn-danger btn-sm">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

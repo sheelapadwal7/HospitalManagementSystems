@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Prescription</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS for styling */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        nav.sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #343a40;
+            /* Dark gray */
+            padding-top: 20px;
+            z-index: 1000;
+            /* Ensure sidebar is on top of other content */
+        }
+
+        .sidebar-link {
+            padding: 10px 15px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #f8f9fa;
+            /* Light gray */
+            display: block;
+        }
+
+        .sidebar-link:hover {
+            background-color: #007bff;
+            /* Blue */
+            color: #f8f9fa;
+        }
+
+        main.content {
+            margin-left: 250px;
+            /* Adjust content area to accommodate sidebar */
+            padding: 20px;
+        }
+
+        .panel {
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .doctor-panel {
+            background-color: #007bff;
+            /* Bootstrap primary color for doctors */
+        }
+
+        .receptionist-panel {
+            background-color: #28a745;
+            /* Bootstrap success color for receptionists */
+        }
+
+        .nurse-panel {
+            background-color: #dc3545;
+            /* Bootstrap danger color for nurses */
+        }
+
+        .panel-primary {
+            background-color: #007bff;
+            /* Blue */
+            color: #ffffff;
+            /* White */
+        }
+
+        .panel-success {
+            background-color: #28a745;
+            /* Green */
+            color: #ffffff;
+        }
+
+        .panel-warning {
+            background-color: #ffc107;
+            /* Yellow */
+            color: #212529;
+            /* Dark gray */
+        }
+
+        .panel-danger {
+            background-color: #dc3545;
+            /* Red */
+            color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/homePage.html">Hospital Management System</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+	<nav class="sidebar">
+	
+			<br>
+			<br>
+	
+			<div class="panel receptionist-panel" onclick="window.location.href='/doctor/patientRecords.html'">
+				Patient Records
+			</div>
+			<div class="panel doctor-panel" onclick="window.location.href='/doctor/prescriptionManagement.html'">
+				Prescription Management
+			</div>
+	
+		</nav>
+    <main class="content">
+        <br>
+        <br>
+        <div id="prescriptions" class="container mt-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-warning text-white">
+                            Add New Prescription
+                        </div>
+                        <div class="card-body">
+                            <form id="addPrescriptionForm">
+                                <div class="form-group">
+                                    <label for="patientName">Patient's Name</label>
+                                    <input type="text" class="form-control" id="patientName"
+                                        placeholder="Enter patient's name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="medication">Medication</label>
+                                    <input type="text" class="form-control" id="medication"
+                                        placeholder="Enter medication">
+                                </div>
+                                <div class="form-group">
+                                    <label for="dosage">Dosage</label>
+                                    <input type="text" class="form-control" id="dosage" placeholder="Enter dosage">
+                                </div>
+                                <button type="submit" class="btn btn-warning">Add Prescription</button>
+                            </form>
+                           <!-- <form id="fetchPrescriptionForm">
+                                <div class="form-group">
+                                    <label for="prescriptionIdInput">Enter Prescription ID:</label>
+                                    <input type="text" class="form-control" id="prescriptionIdInput" placeholder="Prescription ID">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Fetch Prescription</button>
+                            </form>-->
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header bg-info text-white">
+                            Prescription Records
+                        </div>
+                        <div class="card-body">
+                            <ul id="prescriptionRecordList" class="list-group">
+                                <!-- Prescription records will be dynamically populated here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        // Function to fetch prescription records and populate the list
+        function fetchPrescriptionRecords() {
+            $.ajax({
+                type: "GET",
+                url: "/prescriptions",
+                dataType: 'json',
+                success: function (records) {
+                    $('#prescriptionRecordList').empty(); // Clear previous records
+                    records.forEach(function (record) {
+                        $('#prescriptionRecordList').append('<li class="list-group-item">' +
+                            '<strong>Patient:</strong> ' + record.patientName +
+                            '<br>' +
+                            '<strong>Medication:</strong> ' + record.medication +
+                            '<br>' +
+                            '<strong>Dosage:</strong> ' + record.dosage +
+                            '</li>');
+                    });
+                },
+                error: function (error) {
+                    console.error('Error fetching prescription records:', error);
+                }
+            });
+        }
+
+        // Fetch prescription records when the page loads
+        fetchPrescriptionRecords();
+
+        // Function to fetch prescription by ID
+        function fetchPrescriptionById(prescriptionId) {
+            $.ajax({
+                type: "GET",
+                url: "/prescriptions/" + prescriptionId,
+                dataType: 'json',
+                success: function (data) {
+                    // Process the fetched prescription data as needed
+                    console.log('Fetched prescription:', data);
+                },
+                error: function (error) {
+                    console.error('Error fetching prescription by ID:', error);
+                }
+            });
+        }
+
+        // Submit form to fetch prescription by ID
+        $('#fetchPrescriptionForm').submit(function (event) {
+            event.preventDefault(); // Prevent default form submission
+            var prescriptionId = $('#prescriptionIdInput').val(); // Get prescription ID from input field
+            fetchPrescriptionById(prescriptionId);
+        });
+
+        // Submit form to add new prescription record
+        $('#addPrescriptionForm').submit(function (event) {
+            event.preventDefault(); // Prevent default form submission
+            var formData = {
+                patientName: $('#patientName').val(),
+                medication: $('#medication').val(),
+                dosage: $('#dosage').val()
+            };
+            // Send AJAX request to add prescription record
+            $.ajax({
+                type: "POST",
+                contentType: "application/json",
+                url: "/prescriptions",
+                data: JSON.stringify(formData),
+                dataType: 'json',
+                success: function () {
+                    // Clear form fields
+                    $('#addPrescriptionForm')[0].reset();
+                    // Fetch updated prescription records
+                    fetchPrescriptionRecords();
+                },
+                error: function (error) {
+                    console.error('Error adding prescription record:', error);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

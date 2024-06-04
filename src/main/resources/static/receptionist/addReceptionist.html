@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Hospital Management System - Receptionist Management</title>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<style>
+		.sidebar {
+			height: 100%;
+			width: 250px;
+			position: fixed;
+			top: 0;
+			left: 0;
+			background-color: #343a40;
+			/* Bootstrap dark background color */
+			padding-top: 20px;
+		}
+
+		.sidebar a {
+			padding: 10px 15px;
+			text-decoration: none;
+			font-size: 18px;
+			color: #fff;
+			display: block;
+		}
+
+		.sidebar a:hover {
+			background-color: #495057;
+			/* Bootstrap dark hover color */
+		}
+
+		.content {
+			margin-left: 250px;
+			padding: 20px;
+		}
+
+		.panel {
+			padding: 20px;
+			margin-bottom: 20px;
+			color: #fff;
+			cursor: pointer;
+		}
+
+		.doctor-panel {
+			background-color: #007bff;
+			/* Bootstrap primary color for doctors */
+		}
+
+		.receptionist-panel {
+			background-color: #28a745;
+			/* Bootstrap success color for receptionists */
+		}
+
+		.nurse-panel {
+			background-color: #dc3545;
+			/* Bootstrap danger color for nurses */
+		}
+		.inventory-panel {
+					background-color:			#dc3545;
+				}
+
+		/* Adjusting content position */
+		.container-fluid {
+			margin-left: 250px;
+		}
+	</style>
+
+
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+		<a class="navbar-brand" href="/homePage.html">Hospital Management System</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="#">Logout</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<nav class="sidebar">
+
+
+		<br>
+		<br>
+		<!-- Panels for different categories -->
+		<div class="panel doctor-panel" onclick="window.location.href='/doctor/adddoctor.html'">
+			Doctors
+		</div>
+		<div class="panel receptionist-panel" onclick="window.location.href='/receptionist/addReceptionist.html'">
+			Receptionists
+		</div>
+		<!--<div class="panel nurse-panel" onclick="window.location.href='/nurse/addNurse.html'">
+			Nurses
+		</div>-->
+		<div class="panel inventory-panel" onclick="window.location.href='/Inventory/inventory.html'">
+			Inventory
+		</div>
+
+	</nav>
+
+
+	<br>
+	<br>
+	<br>
+	<div class="container-fluid">
+		<h2 class="text-center">Receptionist Management</h2>
+		<div class="spacer"></div>
+
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label for="receptionistId">Receptionist ID:</label>
+					<input type="text" class="form-control" id="receptionistId">
+				</div>
+				<div class="form-group">
+					<label for="receptionistName">Receptionist Name:</label>
+					<input type="text" class="form-control" id="receptionistName">
+				</div>
+				<div class="form-group">
+					<label for="department">Department:</label>
+					<input type="text" class="form-control" id="department">
+				</div>
+				<button type="button" class="btn btn-primary" onclick="addReceptionist()">Add Receptionist</button>
+			</div>
+			<div class="col-md-8">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Name</th>
+							<th>Department</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody id="receptionistTableBody">
+						<!-- Receptionists will be dynamically added here -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap JS and jQuery -->
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<script>
+		// Fetch existing receptionists' data when the page loads
+		$.ajax({
+			type: 'GET',
+			url: '/receptionists',
+			success: function (data) {
+				// Populate the table with existing data
+				data.forEach(function (receptionist) {
+					$('#receptionistTableBody').append(
+						'<tr>' +
+						'<td>' + receptionist.id + '</td>' +
+						'<td>' + receptionist.name + '</td>' +
+						'<td>' + receptionist.department + '</td>' +
+						'<td>' +
+						'<button class="btn btn-info edit-btn" onclick="openUpdateModal(' + receptionist.id + ', \'' + receptionist.name + '\', \'' + receptionist.department + '\')">Edit</button>' +
+						'<button class="btn btn-danger ml-1 delete-btn">Delete</button>' +
+						'</td>' +
+						'</tr>'
+					);
+				});
+			},
+			error: function (xhr, status, error) {
+				// Show error message using Bootstrap alert
+				$('.container').prepend(
+					'<div class="alert alert-danger" role="alert">' +
+					'Failed to fetch receptionists. Please try again.' +
+					'</div>'
+				);
+			}
+		});
+
+		// Function to add receptionist
+		function addReceptionist() {
+			var receptionistName = $('#receptionistName').val();
+			var department = $('#department').val();
+
+			var receptionistData = {
+				name: receptionistName,
+				department: department
+			};
+
+			$.ajax({
+				type: 'POST',
+				url: '/receptionists',
+				contentType: 'application/json',
+				data: JSON.stringify(receptionistData),
+				success: function (data) {
+					// Append newly added receptionist to table
+					$('#receptionistTableBody').append(
+						'<tr>' +
+						'<td>' + data.id + '</td>' +
+						'<td>' + data.name + '</td>' +
+						'<td>' + data.department + '</td>' +
+						'<td>' +
+						'<button class="btn btn-info edit-btn" onclick="openUpdateModal(' + data.id + ', \'' + data.name + '\', \'' + data.department + '\')">Edit</button>' +
+						'<button class="btn btn-danger ml-1 delete-btn">Delete</button>' +
+						'</td>' +
+						'</tr>'
+					);
+					// Clear input fields after adding receptionist
+					$('#receptionistName').val('');
+					$('#department').val('');
+					// Show add success modal
+					$('#addReceptionistModal').modal('show');
+				},
+				error: function (xhr, status, error) {
+					// Show error message using Bootstrap alert
+					$('.container').prepend(
+						'<div class="alert alert-danger" role="alert">' +
+						'Failed to add receptionist. Please try again.' +
+						'</div>'
+					);
+				}
+			});
+		}
+
+		// Function to open update modal with receptionist data
+		function openUpdateModal(receptionistId, receptionistName, department) {
+			$('#updateReceptionistId').val(receptionistId);
+			$('#updateReceptionistName').val(receptionistName);
+			$('#updateDepartment').val(department);
+			$('#editReceptionistModal').modal('show');
+		}
+
+		// Function to update receptionist
+		function updateReceptionist() {
+			var receptionistId = $('#updateReceptionistId').val();
+			var receptionistName = $('#updateReceptionistName').val();
+			var department = $('#updateDepartment').val();
+
+			var updatedReceptionistData = {
+				id: receptionistId,
+				name: receptionistName,
+				department: department
+			};
+
+			$.ajax({
+				type: 'PUT',
+				url: '/receptionists/' + receptionistId,
+				contentType: 'application/json',
+				data: JSON.stringify(updatedReceptionistData),
+				success: function (data) {
+					// Update the row with new data
+					var row = $('td:contains("' + receptionistId + '")').closest('tr');
+					row.find('td:eq(1)').text(data.name);
+					row.find('td:eq(2)').text(data.department);
+
+					// Show edit success modal
+					$('#editReceptionistModal').modal('hide');
+					$('#editReceptionistSuccessModal').modal('show');
+				},
+				error: function (xhr, status, error) {
+					// Show error message using Bootstrap alert
+					$('.container').prepend(
+						'<div class="alert alert-danger" role="alert">' +
+						'Failed to update receptionist. Please try again.' +
+						'</div>'
+					);
+				}
+			});
+		}
+
+		// Function to delete receptionist
+		$(document).on('click', '.delete-btn', function () {
+			var row = $(this).closest('tr');
+			var receptionistId = row.find('td:eq(0)').text();
+
+			$.ajax({
+				type: 'DELETE',
+				url: '/receptionists/' + receptionistId,
+				success: function () {
+					row.remove();
+					$('#deleteReceptionistModal').modal('show');
+				},
+				error: function (xhr, status, error) {
+					$('.container').prepend(
+						'<div class="alert alert-danger" role="alert">' +
+						'Failed to delete receptionist. Please try again.' +
+						'</div>'
+					);
+				}
+			});
+		});
+
+	</script>
+
+	<!-- Add Receptionist Modal -->
+	<div class="modal fade" id="addReceptionistModal" tabindex="-1" role="dialog"
+		aria-labelledby="addReceptionistModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addReceptionistModalLabel">Receptionist Added</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Receptionist added successfully.
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Edit Receptionist Modal -->
+	<div class="modal fade" id="editReceptionistModal" tabindex="-1" role="dialog"
+		aria-labelledby="editReceptionistModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editReceptionistModalLabel">Update Receptionist</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="updateReceptionistId">Receptionist ID:</label>
+						<input type="text" class="form-control" id="updateReceptionistId" readonly>
+					</div>
+					<div class="form-group">
+						<label for="updateReceptionistName">Receptionist Name:</label>
+						<input type="text" class="form-control" id="updateReceptionistName">
+					</div>
+					<div class="form-group">
+						<label for="updateDepartment">Department:</label>
+						<input type="text" class="form-control" id="updateDepartment">
+					</div>
+					<button type="button" class="btn btn-primary" onclick="updateReceptionist()">Update
+						Receptionist</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Delete Receptionist Modal -->
+	<div class="modal fade" id="deleteReceptionistModal" tabindex="-1" role="dialog"
+		aria-labelledby="deleteReceptionistModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteReceptionistModalLabel">Receptionist Deleted</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Receptionist deleted successfully.
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Edit Receptionist Success Modal -->
+	<div class="modal fade" id="editReceptionistSuccessModal" tabindex="-1" role="dialog"
+		aria-labelledby="editReceptionistSuccessModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editReceptionistSuccessModalLabel">Receptionist Updated</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Receptionist updated successfully.
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Doctor Dashboard</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<style>
+		/* Custom CSS for styling */
+		body {
+			font-family: Arial, sans-serif;
+		}
+
+		nav.sidebar {
+			height: 100%;
+			width: 250px;
+			position: fixed;
+			top: 0;
+			left: 0;
+			background-color: #343a40;
+			/* Dark gray */
+			padding-top: 20px;
+			z-index: 1000;
+			/* Ensure sidebar is on top of other content */
+		}
+
+		.sidebar-link {
+			padding: 10px 15px;
+			text-decoration: none;
+			font-size: 18px;
+			color: #f8f9fa;
+			/* Light gray */
+			display: block;
+		}
+
+		.sidebar-link:hover {
+			background-color: #007bff;
+			/* Blue */
+			color: #f8f9fa;
+		}
+
+		main.content {
+			margin-left: 250px;
+			/* Adjust content area to accommodate sidebar */
+			padding: 20px;
+		}
+
+		.panel {
+			padding: 20px;
+			margin-bottom: 20px;
+		}
+
+		.doctor-panel {
+			background-color: #007bff;
+			/* Bootstrap primary color for doctors */
+		}
+
+		.receptionist-panel {
+			background-color: #28a745;
+			/* Bootstrap success color for receptionists */
+		}
+
+		.nurse-panel {
+			background-color: #dc3545;
+			/* Bootstrap danger color for nurses */
+		}
+
+		.panel-primary {
+			background-color: #007bff;
+			/* Blue */
+			color: #ffffff;
+			/* White */
+		}
+
+		.panel-success {
+			background-color: #28a745;
+			/* Green */
+			color: #ffffff;
+		}
+
+		.panel-warning {
+			background-color: #ffc107;
+			/* Yellow */
+			color: #212529;
+			/* Dark gray */
+		}
+
+		.panel-danger {
+			background-color: #dc3545;
+			/* Red */
+			color: #ffffff;
+		}
+	</style>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+		<a class="navbar-brand" href="/homePage.html">Hospital Management System</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="#">Logout</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<nav class="sidebar">
+
+		<br>
+		<br>
+
+		<div class="panel receptionist-panel" onclick="window.location.href='/doctor/patientRecords.html'">
+			Patient Records
+		</div>
+		<div class="panel doctor-panel" onclick="window.location.href='/doctor/prescriptionManagement.html'">
+			Prescription Management
+		</div>
+
+	</nav>
+
+	<main class="content">
+		<br>
+		<br>
+		<div class="container-fluid mt-4">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card bg-primary text-white">
+						<div class="card-body">
+							<h5 class="card-title">Patient Records</h5>
+							<p class="card-text">Upload patient records.</p>
+							<!-- Form for file upload -->
+							<form id="uploadForm" enctype="multipart/form-data" **id="uploadForm" **>
+								<input type="file" name="file" id="fileInput" class="form-control-file">
+								<button type="submit" class="btn btn-light mt-2">Upload</button>
+							</form>
+							<!-- Display upload status -->
+							<div id="uploadStatus" class="mt-2"></div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card bg-success text-white">
+						<div class="card-body">
+							<h5 class="card-title">Prescription Management</h5>
+							<p class="card-text">Manage prescriptions.</p>
+							<a class="card-link text-white" href="/doctor/prescriptionManagement.html">Go to
+								Prescription Management</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<!-- Bootstrap JS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<!-- Custom JavaScript -->
+	<script>
+		$(document).ready(function () {
+			// Form submission handler
+			$("#uploadForm").submit(function (event) {
+				event.preventDefault(); // Prevent default form submission
+				var formData = new FormData(this);
+				var recordId = 1; // Replace this with the actual ID value
+				$.ajax({
+					url: "/patientRecords/upload",
+					type: "POST",
+					data: formData,
+					contentType: false,
+					processData: false,
+					success: function (response) {
+						if (response.success) {
+							$("#uploadStatus").html('<div class="alert alert-success" role="alert">' +
+								response.message + '</div>');
+						} else {
+							$("#uploadStatus").html('<div class="alert alert-danger" role="alert">' +
+								response.message + '</div>');
+						}
+					},
+					error: function (xhr, status, error) {
+						$("#uploadStatus").html('<div class="alert alert-danger" role="alert">Error: ' +
+							xhr.responseText + '</div>');
+					}
+				});
+			});
+		});
+
+	</script>
+</body>
+
+</html>

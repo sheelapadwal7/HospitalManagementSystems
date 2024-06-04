@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Inventory Management</title>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+	<style>
+		.sidebar {
+			height: 100%;
+			width: 250px;
+			position: fixed;
+			top: 0;
+			left: 0;
+			background-color: #343a40;
+			/* Bootstrap dark background color */
+			padding-top: 20px;
+		}
+
+		.sidebar a {
+			padding: 10px 15px;
+			text-decoration: none;
+			font-size: 18px;
+			color: #fff;
+			display: block;
+		}
+
+		.sidebar a:hover {
+			background-color: #495057;
+			/* Bootstrap dark hover color */
+		}
+
+		.content {
+			margin-left: 250px;
+			padding: 20px;
+		}
+
+		.panel {
+			padding: 20px;
+			margin-bottom: 20px;
+			color: #fff;
+			cursor: pointer;
+		}
+
+		.doctor-panel {
+			background-color: #007bff;
+			/* Bootstrap primary color for doctors */
+		}
+
+		.receptionist-panel {
+			background-color: #28a745;
+			/* Bootstrap success color for receptionists */
+		}
+
+		.nurse-panel {
+			background-color: #dc3545;
+			/* Bootstrap danger color for nurses */
+		}
+
+		.inventory-panel {
+			background-color: #dc3545;
+		}
+
+		/* Adjusting content position */
+		.container-fluid {
+			margin-left: 250px;
+		}
+	</style>
+
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+		<a class="navbar-brand" href="/homePage.html">Hospital Management System</a>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<a class="nav-link" href="#">Logout</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<nav class="sidebar">
+
+
+		<br>
+		<br>
+		<!-- Panels for different categories -->
+		<div class="panel doctor-panel" onclick="window.location.href='/doctor/adddoctor.html'">
+			Doctors
+		</div>
+		<div class="panel receptionist-panel" onclick="window.location.href='/receptionist/addReceptionist.html'">
+			Receptionists
+		</div>
+		<!--<div class="panel nurse-panel" onclick="window.location.href='/nurse/addNurse.html'">
+				Nurses
+			</div>-->
+		<div class="panel inventory-panel" onclick="window.location.href='/Inventory/inventory.html'">
+			Inventory
+		</div>
+
+	</nav>
+	<div class="container-fluid">
+		<h2 class="text-center mt-5">Inventory Management</h2>
+		<br>
+		<div class="row">
+			<div class="col-md-4">
+				<div class="form-group">
+					<label for="itemId">Item ID:</label>
+					<input type="text" class="form-control" id="itemId">
+				</div>
+				<div class="form-group">
+					<label for="itemName">Item Name:</label>
+					<input type="text" class="form-control" id="itemName">
+				</div>
+				<div class="form-group">
+					<label for="quantity">Quantity:</label>
+					<input type="text" class="form-control" id="quantity">
+				</div>
+				<button type="button" class="btn btn-primary" onclick="addItem()">Add Item</button>
+			</div>
+			<div class="col-md-8">
+				<table class="table">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Item Name</th>
+							<th>Quantity</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody id="inventoryTableBody">
+						<!-- Items will be dynamically added here -->
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap JS and jQuery -->
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+	<!-- Add Item Modal -->
+	<div class="modal fade" id="addItemModal" tabindex="-1" role="dialog" aria-labelledby="addItemModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="addItemModalLabel">Item Added</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Item added successfully.
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Edit Item Modal -->
+	<div class="modal fade" id="editItemModal" tabindex="-1" role="dialog" aria-labelledby="editItemModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editItemModalLabel">Update Item</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<label for="updateItemId">Item ID:</label>
+						<input type="text" class="form-control" id="updateItemId" readonly>
+					</div>
+					<div class="form-group">
+						<label for="updateItemName">Item Name:</label>
+						<input type="text" class="form-control" id="updateItemName">
+					</div>
+					<div class="form-group">
+						<label for="updateQuantity">Quantity:</label>
+						<input type="text" class="form-control" id="updateQuantity">
+					</div>
+					<button type="button" class="btn btn-primary" onclick="updateItem()">Update Item</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Delete Item Modal -->
+	<div class="modal fade" id="deleteItemModal" tabindex="-1" role="dialog" aria-labelledby="deleteItemModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="deleteItemModalLabel">Item Deleted</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Item deleted successfully.
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Edit Item Success Modal -->
+	<div class="modal fade" id="editItemSuccessModal" tabindex="-1" role="dialog"
+		aria-labelledby="editItemSuccessModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="editItemSuccessModalLabel">Item Updated</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					Item updated successfully.
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		// Fetch existing items' data when the page loads
+		$.ajax({
+			type: 'GET',
+			url: '/inventory',
+			success: function (data) {
+				// Populate the table with existing data
+				data.forEach(function (item) {
+					$('#inventoryTableBody').append(
+						'<tr>' +
+						'<td>' + item.id + '</td>' +
+						'<td>' + item.itemName + '</td>' +
+						'<td>' + item.quantity + '</td>' +
+						'<td>' +
+						'<button class="btn btn-info edit-btn" onclick="openUpdateModal(' + item.id + ', \'' + item.itemName + '\', \'' + item.quantity + '\')">Edit</button>' +
+						'<button class="btn btn-danger ml-1 delete-btn">Delete</button>' +
+						'</td>' +
+						'</tr>'
+					);
+				});
+			},
+			error: function (xhr, status, error) {
+				// Show error message using Bootstrap alert
+				$('.container').prepend(
+					'<div class="alert alert-danger" role="alert">' +
+					'Failed to fetch items. Please try again.' +
+					'</div>'
+				);
+			}
+		});
+
+		function addItem() {
+			var itemId = $('#itemId').val();
+			var itemName = $('#itemName').val();
+			var quantity = $('#quantity').val();
+
+			// Check if itemName is empty
+			if (!itemName.trim()) {
+				// Show error message using Bootstrap alert
+				$('.container').prepend(
+					'<div class="alert alert-danger" role="alert">' +
+					'Item Name cannot be empty. Please enter a valid item name.' +
+					'</div>'
+				);
+				return; // Exit function if itemName is empty
+			}
+
+			var itemData = {
+				id: itemId,
+				itemName: itemName,
+				quantity: quantity
+			};
+
+			// Perform AJAX request to add item
+			$.ajax({
+				type: 'POST',
+				url: '/inventory',
+				contentType: 'application/json',
+				data: JSON.stringify(itemData),
+				success: function (data) {
+					console.log(data);
+					// Append newly added item to table
+					$('#inventoryTableBody').append(
+						'<tr>' +
+						'<td>' + data.id + '</td>' +
+						'<td>' + data.itemName + '</td>' +
+						'<td>' + data.quantity + '</td>' +
+						'<td>' +
+						'<button class="btn btn-info edit-btn" onclick="openUpdateModal(' + data.id + ', \'' + data.itemName + '\', \'' + data.quantity + '\')">Edit</button>' +
+						'<button class="btn btn-danger ml-1 delete-btn">Delete</button>' +
+						'</td>' +
+						'</tr>'
+					);
+					// Clear input fields after adding item
+					$('#itemId').val('');
+					$('#itemName').val('');
+					$('#quantity').val('');
+					// Show add success modal
+					$('#addItemModal').modal('show');
+				},
+				error: function (xhr, status, error) {
+					// Show error message using Bootstrap alert
+					$('.container').prepend(
+						'<div class="alert alert-danger" role="alert">' +
+						'Failed to add item. Please try again.' +
+						'</div>'
+					);
+				}
+			});
+		}
+
+
+		// Function to open update modal with item data
+		function openUpdateModal(itemId, itemName, quantity) {
+			$('#updateItemId').val(itemId);
+			$('#updateItemName').val(itemName); // Corrected ID here
+			$('#updateQuantity').val(quantity);
+			$('#editItemModal').modal('show');
+		}
+
+		// Function to update item
+		function updateItem() {
+			var itemId = $('#updateItemId').val();
+			var itemName = $('#updateItemName').val();
+			var quantity = $('#updateQuantity').val();
+
+			var updatedItemData = {
+				id: itemId,
+				itemName: itemName,
+				quantity: quantity
+			};
+
+			// Perform AJAX request to update item
+			$.ajax({
+				type: 'PUT',
+				url: '/inventory/' + itemId,
+				contentType: 'application/json',
+				data: JSON.stringify(updatedItemData),
+				success: function (data) {
+					// Find the row with the corresponding item ID
+					var row = $('#inventoryTableBody').find('tr').filter(function () {
+						return $(this).find('td:first').text() === itemId;
+					});
+
+					// Update the data in the row
+					row.find('td:eq(1)').text(itemName);
+					row.find('td:eq(2)').text(quantity);
+
+					// Show edit success modal
+					$('#editItemModal').modal('hide');
+					$('#editItemSuccessModal').modal('show');
+				},
+				error: function (xhr, status, error) {
+					// Show error message using Bootstrap alert
+					$('.container').prepend(
+						'<div class="alert alert-danger" role="alert">' +
+						'Failed to update item. Please try again.' +
+						'</div>'
+					);
+				}
+			});
+		}
+		// Function to delete item
+		$(document).on('click', '.delete-btn', function () {
+			var row = $(this).closest('tr');
+			var itemId = row.find('td:eq(0)').text();
+
+			$.ajax({
+				type: 'DELETE',
+				url: '/inventory/' + itemId,
+				success: function () {
+					row.remove();
+					$('#deleteItemModal').modal('show');
+				},
+				error: function (xhr, status, error) {
+					console.log(xhr);
+					$('.container').prepend(
+						'<div class="alert alert-danger" role="alert">' +
+						'Failed to delete item. Please try again.' +
+						'</div>'
+					);
+				}
+			});
+		});
+
+	</script>
+
+</body>
+
+</html>

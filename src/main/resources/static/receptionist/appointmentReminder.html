@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Reminder Form</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 20px;
+        }
+        #reminderForm {
+            max-width: 500px;
+            margin: auto;
+        }
+        #reminderForm label {
+            font-weight: bold;
+        }
+        #reminderForm input[type="email"],
+        #reminderForm textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        #reminderForm button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #reminderForm button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <h2 class="text-center">Appointment Reminder Form</h2>
+                <form id="reminderForm">
+                    <div class="form-group">
+                        <label for="patientEmail">Patient Email:</label>
+                        <input type="email" id="patientEmail" name="patientEmail" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="appointmentDetails">Appointment Details:</label>
+                        <textarea id="appointmentDetails" name="appointmentDetails" class="form-control" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Send Reminder</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (if required) -->
+    <!-- Optional: jQuery, Popper.js, Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script> -->
+    <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
+
+    <script>
+        document.getElementById("reminderForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+        
+            var formData = {
+                patientEmail: document.getElementById("patientEmail").value,
+                appointmentDetails: document.getElementById("appointmentDetails").value
+            };
+        
+            fetch("/appointments/sendReminder", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    </script>
+</body>
+</html>

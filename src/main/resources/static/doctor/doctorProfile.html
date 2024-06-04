@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profile</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div id="profile" class="container mt-5">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        Doctor Profile
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="doctorName">Doctor's Name</label>
+                                <input type="text" class="form-control" id="doctorName"
+                                    placeholder="Enter doctor's name">
+                            </div>
+                            <div class="form-group">
+                                <label for="contactDetails">Contact Details</label>
+                                <input type="text" class="form-control" id="contactDetails"
+                                    placeholder="Enter contact details">
+                            </div>
+                            <div class="form-group">
+                                <label for="specialty">Specialty</label>
+                                <input type="text" class="form-control" id="specialty"
+                                    placeholder="Enter specialty">
+                            </div>
+                            <div class="form-group">
+                                <label for="qualifications">Qualifications</label>
+                                <textarea class="form-control" id="qualifications" rows="3"
+                                    placeholder="Enter qualifications"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Profile</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        Doctor Information
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Name:</strong> John Doe</p>
+                        <p><strong>Contact:</strong> +1234567890</p>
+                        <p><strong>Specialty:</strong> Cardiology</p>
+                        <p><strong>Qualifications:</strong> MD, PhD</p>
+                        <!-- Add more information here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
