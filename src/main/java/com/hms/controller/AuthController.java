@@ -89,8 +89,8 @@ public class AuthController {
 			if (currentTime.isBefore(unlockTime)) {
 				throw new RuntimeException("Account locked. Please try again later.");
 			}
-		
-		else {
+
+			else {
 				admin.setAccountStatus("active");
 				admin.setLoginAttempts(0);
 				admin.setLockedDateTime(null);
@@ -207,7 +207,7 @@ public class AuthController {
 		return loginResponseDto;
 
 	}
-	
+
 	@PostMapping("/doctor/logout")
 	public ResponseEntity<String> doctorlogout(@RequestParam String token) {
 		if (jwtService.inValidateToken(token)) {

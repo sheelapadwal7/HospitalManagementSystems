@@ -1,7 +1,6 @@
 package com.hms.enums;
 
 public enum Gender {
-	MALE,FEMALE,TRANSGENDER
-
+	MALE, FEMALE
 
 }

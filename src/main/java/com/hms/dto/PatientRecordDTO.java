@@ -17,5 +17,4 @@ public class PatientRecordDTO {
  private String diagnosis;
  private LocalDate date;
 
-
 }

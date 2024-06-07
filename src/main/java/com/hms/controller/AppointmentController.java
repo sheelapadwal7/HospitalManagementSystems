@@ -27,9 +27,9 @@ public class AppointmentController {
 
 	@Autowired
 	AppointmentService appointmentService;
-	
-	 @Autowired
-	 CommunicationService communicationService;
+
+	@Autowired
+	CommunicationService communicationService;
 
 	@GetMapping
 	public List<AppointmentDTO> getAllAppointments() {
@@ -98,21 +98,19 @@ public class AppointmentController {
 		return ResponseEntity.noContent().build();
 	}
 
-	 @PutMapping("/mark-attended/{appointmentId}")
-	    public ResponseEntity<AppointmentDTO> markAppointmentAsAttended(
-	            @PathVariable Integer appointmentId
-	            ) {
-	        AppointmentDTO updatedAppointmentDTO = appointmentService.markAppointmentAsAttended(appointmentId);
-	        if (updatedAppointmentDTO != null) {
-	            return new ResponseEntity<>(updatedAppointmentDTO, HttpStatus.OK);
-	        } else {
-	            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-	        }
-	    }
-	 
-	 @PostMapping("/sendReminder")
-	    public String sendAppointmentReminder(@RequestBody AppointmentReminderRequest request) {
-	        communicationService.sendAppointmentReminder(request.getPatientEmail(), request.getAppointmentDetails());
-	        return "Reminder sent successfully";
-	    }
+	@PutMapping("/mark-attended/{appointmentId}")
+	public ResponseEntity<AppointmentDTO> markAppointmentAsAttended(@PathVariable Integer appointmentId) {
+		AppointmentDTO updatedAppointmentDTO = appointmentService.markAppointmentAsAttended(appointmentId);
+		if (updatedAppointmentDTO != null) {
+			return new ResponseEntity<>(updatedAppointmentDTO, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PostMapping("/sendReminder")
+	public String sendAppointmentReminder(@RequestBody AppointmentReminderRequest request) {
+		communicationService.sendAppointmentReminder(request.getPatientEmail(), request.getAppointmentDetails());
+		return "Reminder sent successfully";
+	}
 }

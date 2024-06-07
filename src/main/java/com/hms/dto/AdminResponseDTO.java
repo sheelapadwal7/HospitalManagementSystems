@@ -2,6 +2,9 @@ package com.hms.dto;
 
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class AdminResponseDTO {
     private boolean success;
     private String message;
@@ -14,29 +17,5 @@ public class AdminResponseDTO {
         this.errors = errors;
     }
 
-    // Getters and Setters
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public List<String> getErrors() {
-        return errors;
-    }
-
-    public void setErrors(List<String> errors) {
-        this.errors = errors;
-    }
 }
 
