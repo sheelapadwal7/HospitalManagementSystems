@@ -23,32 +23,28 @@ import lombok.Data;
 @Entity
 @Table(name = "admin")
 public class Admin implements UserDetails {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "admin_id")
-    private Integer id;
-    
-    
-    @Column(name = "first_name")
-    private String firstName;
-    
-    
-    @Column(name = "last_name")
-    private String lastName;
-    
-    
-    @Column(name = "email")
-    private String email;
-    
-    
-    @Column(name = "password")
-    private String password;
-    
-    @Column(name="user_Name")
-    private String userName;
-    
-    private String accountStatus;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "admin_id")
+	private Integer id;
+
+	@Column(name = "first_name")
+	private String firstName;
+
+	@Column(name = "last_name")
+	private String lastName;
+
+	@Column(name = "email")
+	private String email;
+
+	@Column(name = "password")
+	private String password;
+
+	@Column(name = "user_Name")
+	private String userName;
+
+	private String accountStatus;
 	private Integer loginAttempts;
 	private LocalDateTime lockedDateTime;
 
@@ -56,39 +52,38 @@ public class Admin implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public String getUsername() {
-		// TODO Auto-generated method stub
+
 		return null;
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
+
 		return false;
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
+
 		return false;
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
+
 		return false;
 	}
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
+
 		return false;
 	}
-	
-    
+
 }

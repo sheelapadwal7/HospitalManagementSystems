@@ -1,7 +1,5 @@
 package com.hms.dto;
 
-
-
 public class ChangePasswordDTO {
 	
     private String newPassword;

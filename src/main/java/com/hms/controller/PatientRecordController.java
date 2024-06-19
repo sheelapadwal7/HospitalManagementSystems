@@ -164,7 +164,7 @@ public class PatientRecordController {
 				//  validation for date format
 				LocalDate date;
 				try {
-					date = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy/MM/dd")); // Parse with correct
+					date = LocalDate.parse(dateStr, DateTimeFormatter.ofPattern("yyyy-MM-dd")); // Parse with correct
 																								// format
 				} catch (DateTimeParseException e) {
 					errors.add("Invalid date format for row: " + currentRow.getRowNum() + ". Date value: " + dateStr);

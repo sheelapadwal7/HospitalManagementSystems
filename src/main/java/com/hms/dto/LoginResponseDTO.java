@@ -7,15 +7,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponseDTO
-
-{
+public class LoginResponseDTO   
+  {
 
 	private boolean status;
 	private String message;
-
 	private UserDTO user;
-
 	private String token;
 
 	public LoginResponseDTO(boolean status, String message, String token) {

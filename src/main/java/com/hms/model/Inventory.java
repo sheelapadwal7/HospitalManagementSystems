@@ -22,7 +22,5 @@ public class Inventory {
     
     @Column(name="quantity")
     private int quantity;
-
-
     
 }

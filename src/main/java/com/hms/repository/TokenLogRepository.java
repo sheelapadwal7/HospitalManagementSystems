@@ -9,24 +9,12 @@ import com.hms.enums.LinkType;
 import com.hms.model.TokenLog;
 
 
-
-/**
- * 
- * 
- @author DURGESH */
-
 @Repository
 public interface TokenLogRepository extends JpaRepository<TokenLog , Integer> {
 
 	Optional<TokenLog> findByToken(String token);
 	
 	Optional<TokenLog> findByTokenAndLinkType(String token, LinkType linkType);
-
-	
-
-
-
-
 
 
 }

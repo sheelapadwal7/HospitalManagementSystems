@@ -1,6 +1,5 @@
 package com.hms.repository;
 
-
 import org.springframework.stereotype.Repository;
 
 import com.hms.model.Admin;
@@ -15,6 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface AdminRepository extends JpaRepository<Admin, Integer> {
 
 	Optional<Admin> findByUserName(String userName);
+	
 	List<Admin> findByAccountStatus(String accountStatus);
 	
 	Optional<Admin> findByEmail(String email);

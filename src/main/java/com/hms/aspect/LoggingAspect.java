@@ -38,10 +38,9 @@ public class LoggingAspect {
 
 	@AfterReturning(pointcut = "execution(* com.hms.controller.AuthController.logout(..)) && args(token)", returning = "result")
 	public void logSuccessfulLogout(JoinPoint joinPoint, String token, Object result) {
-		// Extract username from the token, providing the UserName parameter
+
 		String userName = jwtService.extractUsernameFromToken(token);
 
-		// Log the logout event
 		if (userName != null) {
 			logger.info("User {} logged out successfully", userName);
 		} else {
